@@ -1,10 +1,7 @@
 package lolm;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.util.pathfinding.AStarPathFinder;
-import org.newdawn.slick.util.pathfinding.Path;
 
 public class Game {
 	// Timer object that keeps track of time relative to the game start
@@ -24,9 +21,9 @@ public class Game {
 	AStarPathFinder pf;
 	// PathCreator object
 	PathCreator pc;
-	
-	DynamicEntity de; // test dynamic entity
-	PathingEntity pe; // Test entity
+
+	// DynamicEntity de; // test dynamic entity
+	// PathingEntity pe; // Test entity
 	public Game(Renderer r, InputChecker im) {
 		timer = new Timer();
 		this.r = r;
@@ -45,45 +42,40 @@ public class Game {
 		pc = new PathCreator(pf,map);
 		
 		// Test pathing with dynamic entity
-		// Path p = pf.findPath(null, 0, 0, 10, 10);
+		/*
 		de = new DynamicEntity(new Circle(0,0,5f), 0, 0);
 		de.setPosition(0f, 0f);
 		de.setPath(pc.createPath(de, new Vector2f(600,151)));
 		de.setRange(775f);
-		
+		*/
 		// Test smooth movement
+		/*
 		pe = new PathingEntity(new Circle(0,0,2f), pf, map, 0, 0);
 		pe.setPosition(851f, 124f);
 		pe.setTarget(851f,124f);
 		pe.setColor(Color.blue);
 		pe.setRange(100f);
+		*/
 	}
 	
 	public void update() {
 		timer.update();
 		im.update(this);
 		cam.update(timer.getTick());
-		de.goPath(timer);
-		pe.goPath(timer);
 	}
 	
 	public void render() {
 		r.drawEntity(map.getMapEntity());
 		r.render();
-		r.drawEntity(de);
-		de.drawRange(r.getGraphics());
-		r.drawEntity(pe);
-		pe.drawRange(r.getGraphics());
 		r.printDebug(timer);
 	}
 	
 	public void setTarget(float x, float y) {
-		pe.setTarget(x,y);
+
 	}
 	
 	public void setPath(float x, float y) {
-		//pe.setPath(x, y);
-		de.setPath(pc.createPath(de, new Vector2f((int)x, (int)y)));
+
 	}
 	
 	// Getters
@@ -93,10 +85,6 @@ public class Game {
 	
 	public Camera getCamera() {
 		return cam;
-	}
-	
-	public DynamicEntity getEntity() {
-		return de;
 	}
 	
 	public Map getMap() {

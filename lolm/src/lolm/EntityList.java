@@ -2,8 +2,6 @@ package lolm;
 
 import java.util.ArrayList;
 
-import org.newdawn.slick.SlickException;
-
 public class EntityList {
 	// for display map background
 	// List of map shapes for collision detection

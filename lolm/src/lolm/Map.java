@@ -83,9 +83,11 @@ public class Map implements TileBasedMap{
 				}
 				fw.write("\n");
 			}
+			fw.close();
 		} catch (Exception e) {
 			
 		}
+		
 	}
 	
 	private void updateScale(float scale) {

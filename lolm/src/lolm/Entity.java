@@ -17,11 +17,15 @@ public class Entity {
 	Color color;
 	Image image;
 	
+	Vector2f scaledPosition;
+	float scale;
 	float range;
 	
 	public Entity() {
 		shape = new Rectangle(0,0,0,0);
 		position = new Vector2f(0,0);
+		scaledPosition = new Vector2f(0,0);
+		scale = 1f;
 		setPosition(0,0);
 		color = Color.white;
 		image = null;
@@ -31,6 +35,9 @@ public class Entity {
 	public Entity(Shape shape, float x, float y) {
 		this.shape = shape;
 		position = new Vector2f(x,y);
+		scaledPosition = new Vector2f(0,0);
+		scale = 1f;
+		setPosition(position);
 		color = Color.white;
 		image = null;
 		range = 0f;
@@ -39,6 +46,9 @@ public class Entity {
 	public Entity(float[] points) {
 		shape = new Polygon(points);
 		position = new Vector2f(0,0);
+		scaledPosition = new Vector2f(0,0);
+		scale = 1f;
+		setPosition(shape.getCenterX(), shape.getCenterY());
 		color = Color.white;
 		image = null;
 		range = 0f;
@@ -58,7 +68,8 @@ public class Entity {
 	// Setters
 	public void setPosition(float x, float y) {
 		position.set(x,y);
-		shape.setCenterX(position.getX()); shape.setCenterY(position.getY());
+		scaledPosition.set(x*scale,y*scale);
+		shape.setCenterX(scaledPosition.getX()); shape.setCenterY(scaledPosition.getY());
 	}
 	
 	public void setPosition(Vector2f position) {
@@ -84,6 +95,14 @@ public class Entity {
 		this.range = range;
 	}
 	
+	public void setScale(float scale) {
+		this.scale = scale;
+		for(int i = 0; i < shape.getPointCount(); i++) {
+			//shape.getP = 5f;
+		}
+		setPosition(position.getX(), position.getY());
+	}
+	
 	// Getters
 	public Shape getShape() {
 		return shape;
@@ -98,5 +117,8 @@ public class Entity {
 	}
 	public Vector2f getPosition() {
 		return position;
+	}
+	public float getScale() {
+		return scale;
 	}
 }

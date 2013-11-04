@@ -43,6 +43,7 @@ public class LoLManager extends BasicGame {
 		rm = new Renderer(container.getGraphics());
 		im = new InputChecker(container.getInput());
 		game = new Game(rm, im);
+		rm.setMap(game.getMap());
 	}
 	
 	@Override

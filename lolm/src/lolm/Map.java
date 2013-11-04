@@ -109,7 +109,7 @@ public class Map implements TileBasedMap{
 	}
 	
 	public void printScale() {
-		System.out.println("scale: " + scale + " oldScale: " + oldScale);
+		//System.out.println("scale: " + scale + " oldScale: " + oldScale);
 	}
 	
 	// Getters

@@ -1,5 +1,6 @@
 package lolm;
 
+import org.lwjgl.input.Mouse;
 import org.newdawn.slick.Input;
 
 public class InputChecker {
@@ -9,19 +10,25 @@ public class InputChecker {
 	}
 	
 	public void update(Game game) {
+		int dWheel = Mouse.getDWheel();
+		if (dWheel < 0) { // Mouse wheel scrolling down
+			game.getMap().setScale(0.95f);
+		} else if (dWheel > 0) { // Mouse wheel scrolling up
+			game.getMap().setScale(1.05f);		
+		}
+		
 		if (input.isMousePressed(Input.MOUSE_RIGHT_BUTTON)) {
 			game.setTarget(input.getMouseX(), input.getMouseY());
 		}
 		if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
-			game.setPath(input.getMouseX()-game.getCamera().getCameraX(), input.getMouseY()-game.getCamera().getCameraY());
+			float scale = (game.getMap().getOldScale());
+			float mx = (input.getMouseX()-game.getCamera().getCameraX())*scale;
+			float my = (input.getMouseY()-game.getCamera().getCameraY())*scale;
+			game.setPath(mx,my);
 			
 		}
-		if (input.isKeyPressed(Input.KEY_W)) {
-			game.getMap().setScale(0.9f);
-			game.getMap().printScale();
-		} else if (input.isKeyPressed(Input.KEY_S)) {
+		if (input.isKeyPressed(Input.KEY_R)) {
 			game.getMap().resetScale();
-			game.getMap().printScale();
 		} else if (input.isKeyPressed(Input.KEY_E)) {
 			game.getTimer().increaseSpeed();
 		} else if (input.isKeyPressed(Input.KEY_Q)) {

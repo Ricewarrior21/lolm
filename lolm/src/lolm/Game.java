@@ -4,6 +4,7 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.geom.Circle;
 import org.newdawn.slick.geom.Vector2f;
 import org.newdawn.slick.util.pathfinding.AStarPathFinder;
+import org.newdawn.slick.util.pathfinding.Path;
 
 public class Game {
 	// Timer object that keeps track of time relative to the game start
@@ -25,6 +26,7 @@ public class Game {
 	PathCreator pc;
 	
 	Entity e;
+	DynamicEntity de;
 	public Game(Renderer r, InputChecker im) {
 		timer = new Timer();
 		this.r = r;
@@ -45,6 +47,8 @@ public class Game {
 		e = new Entity(new Circle(0,0,5), 250f, 250f);
 		e.setColor(Color.darkGray);
 		e.setScale(map.getScale());
+		de = new DynamicEntity(new Circle(0,0,5), 500f, 300f);
+		de.setTarget(200f,150f);
 	}
 	
 	public void update() {
@@ -53,22 +57,28 @@ public class Game {
 		cam.update(timer.getTick());
 		if (e.getScale() != (1/map.getOldScale())) {
 			e.setScale(1/map.getOldScale());
+			de.setScale(1/map.getOldScale());
 		}
+		de.goPath(timer);
 	}
 	
 	public void render() {
-		r.drawEntity(map.getMapEntity());
-		r.drawEntity(e);
 		r.render();
+		r.drawEntity(e);
+		r.drawEntity(de);
+		
 		r.printDebug(timer, e);
 	}
 	
 	public void setTarget(float x, float y) {
-		
+		cam.setTarget(x, y);
 	}
 	
 	public void setPath(float x, float y) {
-
+		de.setTarget(x,y);
+		Vector2f target = new Vector2f(x,y);
+		Path p = pc.createPath(de, target);
+		de.setPath(p);
 	}
 	
 	// Getters

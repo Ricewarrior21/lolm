@@ -18,11 +18,13 @@ public class Entity {
 	Image image;
 	
 	Vector2f scaledPosition;
+	Shape scaledShape;
 	float scale;
 	float range;
 	
 	public Entity() {
 		shape = new Rectangle(0,0,0,0);
+		scaledShape = shape;
 		position = new Vector2f(0,0);
 		scaledPosition = new Vector2f(0,0);
 		scale = 1f;
@@ -34,10 +36,11 @@ public class Entity {
 	
 	public Entity(Shape shape, float x, float y) {
 		this.shape = shape;
+		scaledShape = shape;
 		position = new Vector2f(x,y);
 		scaledPosition = new Vector2f(0,0);
 		scale = 1f;
-		setPosition(position);
+		setPosition(position.getX(), position.getY());
 		color = Color.white;
 		image = null;
 		range = 0f;
@@ -45,6 +48,7 @@ public class Entity {
 	
 	public Entity(float[] points) {
 		shape = new Polygon(points);
+		scaledShape = shape;
 		position = new Vector2f(0,0);
 		scaledPosition = new Vector2f(0,0);
 		scale = 1f;
@@ -68,13 +72,14 @@ public class Entity {
 	// Setters
 	public void setPosition(float x, float y) {
 		position.set(x,y);
-		scaledPosition.set(x*scale,y*scale);
-		shape.setCenterX(scaledPosition.getX()); shape.setCenterY(scaledPosition.getY());
-	}
-	
-	public void setPosition(Vector2f position) {
-		this.position.set(position);
 		shape.setCenterX(position.getX()); shape.setCenterY(position.getY());
+		if (scale == 1f) {
+			scaledPosition.set(position);
+			scaledShape = shape;
+		} else {
+			scaledPosition.set(x*scale,y*scale);
+			scaledShape.setCenterX(scaledPosition.getX()); scaledShape.setCenterY(scaledPosition.getY());
+		}
 	}
 	
 	public void setColor(Color color) {
@@ -95,17 +100,25 @@ public class Entity {
 		this.range = range;
 	}
 	
+	public void setShape(Shape shape) {
+		this.shape = shape;
+	}
+	
 	public void setScale(float scale) {
 		this.scale = scale;
-		for(int i = 0; i < shape.getPointCount(); i++) {
-			//shape.getP = 5f;
+		float[] sPoints = shape.getPoints();
+		float[] points = new float[sPoints.length];
+		for (int i = 0; i < points.length; i++) {
+			points[i] = sPoints[i];
+			points[i] *= scale;
 		}
+		scaledShape = new Polygon(points);
 		setPosition(position.getX(), position.getY());
 	}
 	
 	// Getters
 	public Shape getShape() {
-		return shape;
+		return scaledShape;
 	}
 	
 	public Image getImage() {

@@ -60,7 +60,7 @@ public class PathingEntity extends Entity {
 				pathCount++;
 			} else {
 				position.set(position.getX()+v.getX(), position.getY()+v.getY());
-				setPosition(position);
+				setPosition(position.getX(), position.getY());
 			}
 		}
 	}

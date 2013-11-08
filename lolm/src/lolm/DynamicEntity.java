@@ -8,6 +8,7 @@ public class DynamicEntity extends Entity {
 	final float slf = 0.065f; // LoL move speed constant
 	Vector2f target;
 	Vector2f velocity;
+	Vector2f scaledVelocity;
 	float distance;
 	float speed;
 
@@ -20,6 +21,7 @@ public class DynamicEntity extends Entity {
 		super(shape,x,y);
 		target = new Vector2f(0,0);
 		velocity = new Vector2f(0,0);
+		scaledVelocity = new Vector2f(0,0);
 		pathing = false;
 		distance = position.distance(target);
 		speed = 325f;
@@ -34,13 +36,16 @@ public class DynamicEntity extends Entity {
 			float vx = speed*slf * (x / distance);
 			float vy = speed*slf * (y / distance);
 			velocity.set(vx,vy);
+			scaledVelocity.set(vx*scale, vy*scale);
 			if ((timer.getTick() % (timer.getTimerSetting().getSpeed()*0.05f)) == 0) {
 				Vector2f v = velocity.scale(0.05f);
+				//Vector2f sv = velocity.scale(0.05f);
 				if (distance < 1f) {
 					position.set(target);
+					setPosition(position.getX(), position.getY());
 				} else {
-					position.set(position.getX()+v.getX(), position.getY()+v.getY());
-					setPosition(position);
+					position.set(position.getX()+(v.getX()*scale), position.getY()+(v.getY()*scale));
+					setPosition(position.getX(), position.getY());
 				}
 			}
 		}
